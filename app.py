@@ -29,7 +29,7 @@ def send():
     food=request.form['food']
     adress=request.form['adress']
     db.session.add(User(name,tel,food,adress))
-    return redirect(url_for('main page.html'))
+    return render_template('отправить.html')
 
 
 @app.route('/contacts')
