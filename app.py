@@ -1,4 +1,4 @@
-from flask import Flask, render_template,request,redirect
+from flask import Flask, render_template,request,redirect,url_for
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
 
@@ -18,14 +18,19 @@ class User(db.Model):
     food=db.Column(db.String,nullable=False)
     adress=db.Column(db.String(600),nullable=False)
 
-@app.route('/',methods=['GET','POST'])
+@app.route('/')
 def main_page():
+    return render_template('main page.html')
+
+@app.route('/отправить', methods=['POST'])
+def send():
     name=request.form['name']
     tel=request.form['tel']
     food=request.form['food']
     adress=request.form['adress']
     db.session.add(User(name,tel,food,adress))
-    return render_template('main page.html')
+    return redirect(url_for('main page.html'))
+
 
 @app.route('/contacts')
 def contacts():
