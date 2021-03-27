@@ -18,19 +18,14 @@ class User(db.Model):
     food=db.Column(db.String,nullable=False)
     adress=db.Column(db.String(600),nullable=False)
 
-@app.route('/')
+@app.route('/',methods=['GET','POST'])
 def main_page():
-    return render_template('main page.html')
-
-@app.route('/отправить', methods=['POST'])
-def send():
     name=request.form['name']
     tel=request.form['tel']
     food=request.form['food']
     adress=request.form['adress']
     db.session.add(User(name,tel,food,adress))
-    return redirect('main page.html')
-
+    return render_template('main page.html')
 
 @app.route('/contacts')
 def contacts():
@@ -52,4 +47,5 @@ def new2():
 
 if __name__ == '__main__':
     app.run()
+
 
