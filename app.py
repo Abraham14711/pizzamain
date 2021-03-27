@@ -1,4 +1,4 @@
-from flask import Flask, render_template,request,redirect,url_for
+from flask import Flask, render_template,request
 from flask_sqlalchemy import SQLAlchemy
 from os import environ
 
@@ -29,7 +29,7 @@ def send():
     food=request.form['food']
     adress=request.form['adress']
     db.session.add(User(name,tel,food,adress))
-    return redirect(url_for('main page.html'))
+    return render_template('main page.html')
 
 
 @app.route('/contacts')
