@@ -1,24 +1,19 @@
 from flask import Flask, render_template,request,redirect,url_for
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-
+from os import environ
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = 'sqlite:///db.sqlite'
+app.config["SQLALCHEMY_DATABASE_URI"] = environ['DATABASE_URL']
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy()
 db.init_app(app)
+db.create_all()
 
-
-class Users(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(50), nullable=False)
-    tel = db.Column(db.String(11), nullable=False)
-    food = db.Column(db.String, nullable=False)
-    adress = db.Column(db.String(600), nullable=False)
-    date = db.Column(db.DateTime, default=datetime.utcnow)
-
-    def __repr__(self):
-        return f"<users {self.id}>"
+class User(db.Model):
+    id = db.Column(db.Integer,primary_key=True)
+    name=db.Column(db.String(50),nullable=False)
+    tel=db.Column(db.String(11),nullable=False)
+    food=db.Column(db.String,nullable=False)
+    adress=db.Column(db.String(600),nullable=False)
 
 @app.route('/')
 def main_page():
@@ -30,8 +25,7 @@ def send():
     tel=request.form['tel']
     food=request.form['food']
     adress=request.form['adress']
-    db.session.add(Users(name,tel,food,adress))
-    db.session.commit()
+    db.session.add(User(name,tel,food,adress))
     return redirect(url_for('main page.html'))
 
 
@@ -54,5 +48,6 @@ def new2():
 
 if __name__ == '__main__':
     app.run()
+
 
 
